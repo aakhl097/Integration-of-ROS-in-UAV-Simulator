@@ -92,8 +92,9 @@ if(gz-transport_FOUND)
 		default
 		windy
 		baylands
-  		lawn
-		walls
+  	lawn
+		rover
+    walls
 	)
 
 	# find corresponding airframes
