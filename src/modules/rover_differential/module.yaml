@@ -113,6 +113,19 @@ parameters:
         decimal: 2
         default: 0.5
 
+      RD_MAX_SPEED:
+        description:
+          short: Maximum allowed speed for the rover
+          long: |
+            This parameter is used to cap desired forward speed and map controller inputs to desired speeds in position mode.
+        type: float
+        unit: m/s
+        min: 0
+        max: 100
+        increment: 0.01
+        decimal: 2
+        default: 1
+
       RD_MAX_THR_SPD:
         description:
           short: Speed the rover drives at maximum throttle
