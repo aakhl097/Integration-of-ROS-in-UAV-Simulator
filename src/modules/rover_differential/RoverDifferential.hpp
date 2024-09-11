@@ -115,8 +115,8 @@ private:
 	float _max_yaw_rate{0.f};
 	int _nav_state{0};
 	bool _armed{false};
-	bool _yaw_ctl{false}; // Indicates if the rover is doing yaw or yaw rate control in position and acro mode
-	float _desired_yaw{0.f}; // Yaw setpoint for position and acro mode
+	bool _yaw_ctl{false}; // Indicates if the rover is doing yaw or yaw rate control in acro, stabilized and position mode
+	float _desired_yaw{0.f}; // Yaw setpoint for acro, stabilized and position mode
 	Vector2f _start_position_ned{}; // Rover position
 
 	// Thresholds to avoid moving at rest due to measurement noise

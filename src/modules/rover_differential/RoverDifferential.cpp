@@ -99,6 +99,39 @@ void RoverDifferential::Run()
 
 		} break;
 
+	case vehicle_status_s::NAVIGATION_STATE_STAB: {
+			manual_control_setpoint_s manual_control_setpoint{};
+
+			if (_manual_control_setpoint_sub.update(&manual_control_setpoint)) {
+				rover_differential_setpoint_s rover_differential_setpoint{};
+				rover_differential_setpoint.timestamp = timestamp;
+				rover_differential_setpoint.forward_speed_setpoint = NAN;
+				rover_differential_setpoint.forward_speed_setpoint_normalized = manual_control_setpoint.throttle;
+				rover_differential_setpoint.yaw_rate_setpoint_normalized = NAN;
+
+				if (fabsf(manual_control_setpoint.roll) > FLT_EPSILON
+				    || fabsf(rover_differential_setpoint.forward_speed_setpoint_normalized) < FLT_EPSILON) { // Closed loop yaw rate control
+					_yaw_ctl = false;
+					rover_differential_setpoint.yaw_rate_setpoint = math::interpolate<float>(manual_control_setpoint.roll,
+							-1.f, 1.f, -_max_yaw_rate, _max_yaw_rate);
+					rover_differential_setpoint.yaw_setpoint = NAN;
+
+				} else { // Closed loop yaw control if the yaw rate input is zero (keep current yaw)
+					if (!_yaw_ctl) {
+						_desired_yaw = _vehicle_yaw;
+						_yaw_ctl = true;
+					}
+
+					rover_differential_setpoint.yaw_setpoint = _desired_yaw;
+					rover_differential_setpoint.yaw_rate_setpoint = NAN;
+
+				}
+
+				_rover_differential_setpoint_pub.publish(rover_differential_setpoint);
+			}
+
+		} break;
+
 	case vehicle_status_s::NAVIGATION_STATE_POSCTL: {
 			manual_control_setpoint_s manual_control_setpoint{};
 

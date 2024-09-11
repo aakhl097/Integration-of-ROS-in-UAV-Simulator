@@ -146,7 +146,8 @@ parameters:
         description:
           short: Maximum allowed yaw rate for the rover
           long: |
-            This parameter is used to cap desired yaw rates and map controller inputs to desired yaw rates in acro mode.
+            This parameter is used to cap desired yaw rates and map controller inputs to desired yaw rates
+            in acro,stabilized and position mode.
         type: float
         unit: deg/s
         min: 0.01
